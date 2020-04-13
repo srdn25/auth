@@ -12,7 +12,7 @@ app.use(bodyParser());
 for(const [key, router] of Object.entries(routerList)) {
   app.use(router.routes());
   app.use(router.allowedMethods());
-  console.log(`Routes for ${key} initialised`);
+  console.log(`Routes for ${key} initialized`);
 };
 
 //logger
