@@ -1,0 +1,17 @@
+{
+  "server": {
+    "raw": {
+      "name": "Link Shortener",
+      "slug": "link_shortener",
+      "url": "http://localhost"
+    },
+    "fields": [
+      "id",
+      "name",
+      "slug",
+      "url",
+      "createdAt",
+      "updatedAt"
+    ]
+  }
+}
