@@ -6,7 +6,9 @@ const routerList = require('./router');
 const app = new Koa();
 
 app.use(bodyParser());
+app.use(async (ctx) => ctx.body = ctx.request.body);
 
+// init routes
 for(const [key, router] of Object.entries(routerList)) {
   app.use(router.routes());
   app.use(router.allowedMethods());
