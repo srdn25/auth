@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Server = sequelize.define('Server', {
+  const Server = sequelize.define('server', {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -10,7 +10,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     url: DataTypes.STRING
-  }, {});
+  }, {
+    tableName: 'server',
+    freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['slug']
+      }
+    ],
+  });
   Server.associate = function(models) {
     // associations can be defined here
   };

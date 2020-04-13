@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Session = sequelize.define('Session', {
+  const Session = sequelize.define('session', {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -21,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     }
-  }, {});
+  }, {
+    tableName: 'session',
+    freezeTableName: true,
+  });
   Session.associate = function(models) {
     // associations can be defined here
   };
