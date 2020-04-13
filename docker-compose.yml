@@ -1,0 +1,40 @@
+# docker-compose.yml
+version: "3"
+services:
+  redis-server:
+    image: redis
+    expose:
+      - 6379
+
+  postgres:
+    image: postgres:11.7-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/init_additional_databases.sql:/docker-entrypoint-initdb.d/init_additional_databases.sql
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_DB: sandbox
+      POSTGRES_PASSWORD: postgres
+
+  app:
+    build: .
+    entrypoint: ["/bin/sh", "./scripts/start.sh"]
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - "3033:3033"
+      - "9229:9229"
+    environment:
+      PSQL_HOST: postgres
+      PSQL_PASSWORD: postgres
+      PSQL_USER: docker
+      PSQL_DATABASE: sandbox
+      PSQL_DATABASE_TEST: test
+      REDIS_URL: redis://redis-server
