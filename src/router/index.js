@@ -8,5 +8,6 @@ router.get('/ping', (ctx) => {
 });
 
 module.exports = {
-  main: router
+  main: router,
+  v1: require('./v1'),
 };

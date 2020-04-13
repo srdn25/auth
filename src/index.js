@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
+const Boom = require('boom');
 
 const routerList = require('./router');
 
@@ -11,12 +12,16 @@ app.use(bodyParser());
 // init routes
 for(const [key, router] of Object.entries(routerList)) {
   app.use(router.routes());
-  app.use(router.allowedMethods());
+  app.use(router.allowedMethods({
+    throw: true,
+    notImplemented: () => new Boom.notImplemented(),
+    methodNotAllowed: () => new Boom.methodNotAllowed(),
+  }));
   console.log(`Routes for ${key} initialized`);
 };
 
 //logger
-app.use(async (ctx) => {
+app.use(async (ctx, next) => {
   await next();
   const rt = ctx.response.get('X-Response-Time');
   console.log(`${ctx.method} ${ctx.url} - ${rt}`);
@@ -27,10 +32,6 @@ app.use(async (ctx, next) => {
   await next();
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
-});
-
-app.use(async (ctx) => {
-  ctx.body = 'Pong';
 });
 
 app.listen(port, () => {
