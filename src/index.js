@@ -4,9 +4,9 @@ const bodyParser = require('koa-bodyparser');
 const routerList = require('./router');
 
 const app = new Koa();
+const port = process.env.PORT || 3033;
 
 app.use(bodyParser());
-app.use(async (ctx) => ctx.body = ctx.request.body);
 
 // init routes
 for(const [key, router] of Object.entries(routerList)) {
@@ -33,4 +33,6 @@ app.use(async (ctx) => {
   ctx.body = 'Pong';
 });
 
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`Application running on ${port} port`)
+});
