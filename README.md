@@ -1,4 +1,9 @@
 # Auth service
+
+For start server exec `npm run docker:run`
+
+If you will use this application, please set star
+or create fork this repository
 ___
 
 ### Requirements
