@@ -1,10 +1,14 @@
 const psql = require('../psql/models');
+const { getPlainFromSequelize } = require('../helper');
 
 const create = async (data, raw = true) => {
   const result = await psql.session.create(data);
-  return raw ? result.toJSON() : result;
+  return getPlainFromSequelize(result, raw);
 };
-const findById = (id, raw = true) => psql.session.findOne({ where: { id }, raw });
+const findById = async (id, raw = true) => {
+  const result = await psql.session.findOne({ where: { id }, raw });
+  return getPlainFromSequelize(result, raw);
+};
 const removeById = async (id) => {
   const result = await psql.session.destroy({ where: { id } });
   return !!result;

@@ -11,7 +11,10 @@ describe('Session repository', function () {
   });
 
   it('Create session can return Sequelize object', async () => {
-    const session = await repository.create(ENTITY.raw, false);
+    const session = await repository.create({
+      ...ENTITY.raw,
+      token: 'jwtOther',
+    }, false);
 
     expect(session instanceof Sequelize.Model).to.be.true;
   });
