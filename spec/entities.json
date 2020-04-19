@@ -1,4 +1,16 @@
 {
+  "sequelize": {
+    "error": {
+      "keys": [
+        "name",
+        "errors",
+        "fields",
+        "parent",
+        "original",
+        "sql"
+      ]
+    }
+  },
   "server": {
     "raw": {
       "name": "Link Shortener",
@@ -28,6 +40,26 @@
       "token",
       "expiredIn",
       "expiredFlag",
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "user": {
+    "raw": {
+      "email": "test@user.ua",
+      "name": "TestUser",
+      "password": "12345qwerty",
+      "serverId": 1
+    },
+    "fields": [
+      "id",
+      "email",
+      "name",
+      "password",
+      "approved",
+      "info",
+      "serverId",
+      "type",
       "createdAt",
       "updatedAt"
     ]

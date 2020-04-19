@@ -1,6 +1,9 @@
 const { Sequelize } = require('../../src/psql/models');
 const { session: repository } = require('../../src/repository');
-const { session: ENTITY } = require('../entities.json');
+const {
+  session: ENTITY,
+  sequelize: { error: { keys: SEQUELIZE_ERROR_KEYS } }
+} = require('../entities.json');
 
 describe('Session repository', function () {
   let Session;
@@ -17,6 +20,22 @@ describe('Session repository', function () {
     }, false);
 
     expect(session instanceof Sequelize.Model).to.be.true;
+  });
+
+  it('Create session. Token should be unique', async () => {
+    let awaitError;
+
+    try {
+      await repository.create(ENTITY.raw, false);
+    } catch (err) {
+      awaitError = err;
+    }
+
+    expect(awaitError).to.have.all.keys(SEQUELIZE_ERROR_KEYS);
+    expect(awaitError.name).to.equal('SequelizeUniqueConstraintError');
+    expect(awaitError.errors).to.be.an('array');
+    expect(awaitError.errors.length).to.equal(1);
+    expect(awaitError.errors[0].message).to.equal('token must be unique');
   });
 
   it('FindById session can return Sequelize object', async () => {
