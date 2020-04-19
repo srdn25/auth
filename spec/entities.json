@@ -13,5 +13,23 @@
       "createdAt",
       "updatedAt"
     ]
+  },
+  "session": {
+    "raw": {
+      "userId": 1,
+      "ip": "127.5.3.9",
+      "token": "jwtToken",
+      "expiredIn": "01.09.3077"
+    },
+    "fields": [
+      "id",
+      "userId",
+      "ip",
+      "token",
+      "expiredIn",
+      "expiredFlag",
+      "createdAt",
+      "updatedAt"
+    ]
   }
 }
