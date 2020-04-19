@@ -66,6 +66,14 @@ describe('User repository', function () {
     expect(user).to.deep.equal(User);
   });
 
+  it('User should have hashed password and has validPassword method', async () => {
+    const user = await repository.findById(User.id, false);
+    const { password } = ENTITY.raw;
+    const checkPassword = user.validPassword(password);
+    expect(user.password).to.not.equal(password);
+    expect(checkPassword).to.be.true;
+  });
+
   it('Delete user by WRONG ID', async () => {
     const result = await repository.removeById(12345);
 

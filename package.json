@@ -47,6 +47,7 @@
   },
   "homepage": "https://github.com/srdn25/auth#readme",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "boom": "^7.3.0",
     "chai": "^4.2.0",
     "koa": "^2.11.0",

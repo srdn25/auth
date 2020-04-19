@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const { userAuthTypeList } = require('../../config');
 
 module.exports = (sequelize, DataTypes) => {
@@ -40,6 +41,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     ],
   });
+
+  User.prototype.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  User.beforeCreate((user) => {
+    const salt = bcrypt.genSaltSync(7);
+    user.password = bcrypt.hashSync(user.password, salt);
+  });
+
   User.associate = function(models) {
     // associations can be defined here
   };
