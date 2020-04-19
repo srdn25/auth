@@ -65,22 +65,22 @@ describe('User repository', function () {
     expect(user).to.have.all.keys(ENTITY.fields);
     expect(user).to.deep.equal(User);
   });
-  //
-  // it('Delete session by WRONG ID', async () => {
-  //   const result = await repository.removeById(12345);
-  //
-  //   const checkSession = await repository.findById(Session.id);
-  //
-  //   expect(result).to.be.false;
-  //   expect(checkSession).to.deep.equal(Session);
-  // });
-  //
-  // it('Delete session by ID', async () => {
-  //   const result = await repository.removeById(Session.id);
-  //
-  //   const checkSession = await repository.findById(Session.id);
-  //
-  //   expect(result).to.be.true;
-  //   expect(checkSession).to.equal(null);
-  // });
+
+  it('Delete user by WRONG ID', async () => {
+    const result = await repository.removeById(12345);
+
+    const checkUser = await repository.findById(User.id);
+
+    expect(result).to.be.false;
+    expect(checkUser).to.deep.equal(User);
+  });
+
+  it('Delete user by ID', async () => {
+    const result = await repository.removeById(User.id);
+
+    const checkUser = await repository.findById(User.id);
+
+    expect(result).to.be.true;
+    expect(checkUser).to.equal(null);
+  });
 });
