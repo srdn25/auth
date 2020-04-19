@@ -1,7 +1,10 @@
 const psql = require('../psql/models');
 
-const create = (data) => psql.session.create(data);
-const findById = (id) => psql.session.findOne({ where: { id } });
+const create = async (data, raw = true) => {
+  const result = await psql.session.create(data);
+  return raw ? result.toJSON() : result;
+};
+const findById = (id, raw = true) => psql.session.findOne({ where: { id }, raw });
 const removeById = async (id) => {
   const result = await psql.session.destroy({ where: { id } });
   return !!result;
