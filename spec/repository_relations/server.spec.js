@@ -10,7 +10,7 @@ describe('Server relations repository', function () {
     Server = await repository.findBySlug(ENTITY.raw.slug, true, true);
 
     expect(Server).to.have.all.keys([...ENTITY.fields, 'users']);
-    expect(Server.users.length).to.equal(1);
+    expect(Server.users.length).to.equal(7);
     expect(Server.users[0]).to.have.all.keys(ENTITY_USER.fields);
   });
 
@@ -18,7 +18,7 @@ describe('Server relations repository', function () {
     Server = await repository.findById(Server.id, true, true);
 
     expect(Server).to.have.all.keys([...ENTITY.fields, 'users']);
-    expect(Server.users.length).to.equal(1);
+    expect(Server.users.length).to.equal(7);
     expect(Server.users[0]).to.have.all.keys(ENTITY_USER.fields);
   });
 });

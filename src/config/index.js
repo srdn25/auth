@@ -11,5 +11,6 @@ module.exports = {
   psql: {
     countUsersInInclude: 7,
     countSessionsInInclude: 5,
+    userByServerPerPage: 15,
   }
 };

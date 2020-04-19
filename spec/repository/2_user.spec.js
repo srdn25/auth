@@ -103,4 +103,22 @@ describe('User repository', function () {
 
     expect(user instanceof Sequelize.Model).to.be.true;
   });
+
+  it('Find users by serverId with paginate', async () => {
+    const server = await serverRepo.findBySlug(ENTITY_SERVER.raw.slug);
+
+    for(let i = 0; i < 10; i++) {
+      await repository.create({
+        ...ENTITY.raw,
+        serverId: server.id,
+        email: `user_${i}@mail.com`,
+      }, true);
+    }
+
+    const users = await repository.findByServerId(server.id, true, 1, 15);
+    expect(users).to.have.all.keys(['count', 'rows']);
+    expect(users.count).to.equal(users.rows.length);
+    expect(users.rows.length).to.equal(11);
+    expect(users.rows[0]).to.have.all.keys(ENTITY.fields);
+  });
 });
