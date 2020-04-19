@@ -11,13 +11,16 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       slug: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       url: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
       },
       createdAt: {
         allowNull: false,

@@ -4,12 +4,17 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
-    url: DataTypes.STRING
+    url: {
+      type: DataTypes.STRING,
+      unique: true,
+    }
   }, {
     tableName: 'server',
     freezeTableName: true,
