@@ -4,5 +4,8 @@ require('dotenv').config();
 require('./postgres');
 
 module.exports = {
-  sessionLifetime: process.env.SESSION_LIFETIME || 1000 * 60 * 30 // 30 minutes
+  sessionLifetime: process.env.SESSION_LIFETIME || 1000 * 60 * 30, // 30 minutes
+  userAuthTypeList: [
+    'BASIC',
+  ],
 };

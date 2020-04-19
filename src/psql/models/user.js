@@ -1,10 +1,11 @@
 'use strict';
+const { userAuthTypeList } = require('../../config');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         isEmail: {
           msg: 'Email field is not valid',
@@ -28,10 +29,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    type: DataTypes.ENUM('BASIC')
+    type: DataTypes.ENUM(userAuthTypeList)
   }, {
     tableName: 'user',
     freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['email', 'serverId']
+      }
+    ],
   });
   User.associate = function(models) {
     // associations can be defined here
