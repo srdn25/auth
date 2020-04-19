@@ -28,7 +28,6 @@
   },
   "session": {
     "raw": {
-      "userId": 1,
       "ip": "127.5.3.9",
       "token": "jwtToken",
       "expiredIn": "01.09.3077"
@@ -48,8 +47,7 @@
     "raw": {
       "email": "test@user.ua",
       "name": "TestUser",
-      "password": "12345qwerty",
-      "serverId": 1
+      "password": "12345qwerty"
     },
     "fields": [
       "id",

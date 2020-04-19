@@ -1,31 +1,33 @@
 const { Sequelize } = require('../../src/psql/models');
-const { user: repository } = require('../../src/repository');
+const {
+  user: repository,
+  server: serverRepo,
+} = require('../../src/repository');
 const {
   user: ENTITY,
+  server: ENTITY_SERVER,
   sequelize: { error: { keys: SEQUELIZE_ERROR_KEYS } }
 } = require('../entities.json');
 
 describe('User repository', function () {
   let User;
   it('Create user', async () => {
-    User = await repository.create(ENTITY.raw);
+    const server = await serverRepo.findBySlug(ENTITY_SERVER.raw.slug);
+    User = await repository.create({
+      ...ENTITY.raw,
+      serverId: server.id,
+    });
 
     expect(User).to.have.all.keys(ENTITY.fields);
-  });
-
-  it('Create user can return Sequelize object', async () => {
-    const user = await repository.create({
-      ...ENTITY.raw,
-      email: 'sequelizeUser@user.ua',
-    }, false);
-
-    expect(user instanceof Sequelize.Model).to.be.true;
   });
 
   it('Create user. Email_serverId should be unique', async () => {
     let awaitError;
     try {
-      await repository.create(ENTITY.raw)
+      await repository.create({
+        ...ENTITY.raw,
+        serverId: User.serverId,
+      })
     } catch (err) {
       awaitError = err;
     }
@@ -90,5 +92,15 @@ describe('User repository', function () {
 
     expect(result).to.be.true;
     expect(checkUser).to.equal(null);
+  });
+
+  it('Create user can return Sequelize object', async () => {
+    const server = await serverRepo.findBySlug(ENTITY_SERVER.raw.slug);
+    const user = await repository.create({
+      ...ENTITY.raw,
+      serverId: server.id,
+    }, false);
+
+    expect(user instanceof Sequelize.Model).to.be.true;
   });
 });

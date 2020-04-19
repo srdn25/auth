@@ -26,8 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'session',
     freezeTableName: true,
   });
+
   Session.associate = function(models) {
-    // associations can be defined here
+    Session.belongsTo(models.user);
   };
+
   return Session;
 };

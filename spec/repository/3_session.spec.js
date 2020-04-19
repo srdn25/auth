@@ -1,14 +1,22 @@
 const { Sequelize } = require('../../src/psql/models');
-const { session: repository } = require('../../src/repository');
+const {
+  session: repository,
+  user: userRepo,
+} = require('../../src/repository');
 const {
   session: ENTITY,
+  user: ENTITY_USER,
   sequelize: { error: { keys: SEQUELIZE_ERROR_KEYS } }
 } = require('../entities.json');
 
 describe('Session repository', function () {
   let Session;
   it('Create session', async () => {
-    Session = await repository.create(ENTITY.raw);
+    const user = await userRepo.findByEmail(ENTITY_USER.raw.email);
+    Session = await repository.create({
+      ...ENTITY.raw,
+      userId: user.id,
+    });
 
     expect(Session).to.have.all.keys(ENTITY.fields);
   });
@@ -17,6 +25,7 @@ describe('Session repository', function () {
     const session = await repository.create({
       ...ENTITY.raw,
       token: 'jwtOther',
+      userId: Session.userId,
     }, false);
 
     expect(session instanceof Sequelize.Model).to.be.true;
@@ -26,7 +35,10 @@ describe('Session repository', function () {
     let awaitError;
 
     try {
-      await repository.create(ENTITY.raw, false);
+      await repository.create({
+        ...ENTITY.raw,
+        userId: Session.userId,
+      }, false);
     } catch (err) {
       awaitError = err;
     }

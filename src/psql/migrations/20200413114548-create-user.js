@@ -1,4 +1,6 @@
 'use strict';
+const { userAuthTypeList } = require('../../config');
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('user', {
@@ -30,9 +32,13 @@ module.exports = {
       serverId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'server',
+          key: 'id',
+        }
       },
       type: {
-        type: Sequelize.ENUM('BASIC')
+        type: Sequelize.ENUM(userAuthTypeList)
       },
       createdAt: {
         allowNull: false,

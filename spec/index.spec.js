@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 
+const importFolder = require('../scripts/import_by_sort');
 const config = require('../src/config');
 const { sequelize } = require('../src/psql/models');
 
@@ -14,8 +15,8 @@ after(async () => {
   await sequelize.close();
 });
 
-require('require-all')({
-  dirname: __dirname + '/repository',
+
+importFolder({
+  folder: __dirname + '/repository',
   filter: /spec\.js$/i,
-  recursive: true,
 });
