@@ -8,4 +8,8 @@ module.exports = {
   userAuthTypeList: [
     'BASIC',
   ],
+  psql: {
+    countUsersInInclude: 7,
+    countSessionsInInclude: 5,
+  }
 };

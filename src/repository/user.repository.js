@@ -1,4 +1,5 @@
 const psql = require('../psql/models');
+const config = require('../config');
 const { userAuthTypeList } = require('../config');
 const { getPlainFromSequelize } = require('../helper');
 
@@ -11,13 +12,33 @@ const create = async (data, raw = true) => {
   return getPlainFromSequelize(result, raw);
 };
 
-const findById = async (id, raw = true) => {
-  const result = await psql.user.findOne({ where: { id }, raw });
+const findById = async (id, raw = true, relations = false) => {
+  const result = await psql.user.findOne({
+    where: { id },
+    ...(relations && {
+      include: [
+        {
+          model: psql.session,
+          limit: config.psql.countSessionsInInclude,
+        }
+      ]
+    }),
+  });
   return getPlainFromSequelize(result, raw);
 };
 
-const findByEmail = async (email, raw = true) => {
-  const result = await psql.user.findOne({ where: { email }, raw });
+const findByEmail = async (email, raw = true, relations  = false) => {
+  const result = await psql.user.findOne({
+    where: { email },
+    ...(relations && {
+      include: [
+        {
+          model: psql.session,
+          limit: config.psql.countSessionsInInclude,
+        }
+      ]
+    }),
+  });
   return getPlainFromSequelize(result, raw);
 };
 

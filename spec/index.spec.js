@@ -20,3 +20,7 @@ importFolder({
   folder: __dirname + '/repository',
   filter: /spec\.js$/i,
 });
+importFolder({
+  folder: __dirname + '/repository_relations',
+  filter: /spec\.js$/i,
+});
