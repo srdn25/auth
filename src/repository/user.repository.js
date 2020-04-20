@@ -47,7 +47,7 @@ const findByServerId = async (
   return getPlainFromSequelize(result, raw);
 };
 
-const getAllUsers = async (
+const getAll = async (
   raw = true,
   page = 1,
   perPage = config.psql.usersAllPerPage,
@@ -71,6 +71,6 @@ module.exports = {
   create,
   findBy,
   findByServerId,
-  getAllUsers,
+  getAll,
   removeById,
 };

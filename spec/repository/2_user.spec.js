@@ -115,7 +115,7 @@ describe('User repository', function () {
   });
 
   it('Get all users with paginate and order', async () => {
-    const usersAsc = await repository.getAllUsers(true, 1, 5, [['createdAt', 'ASC']]);
+    const usersAsc = await repository.getAll(true, 1, 5, [['createdAt', 'ASC']]);
     expect(usersAsc).to.have.all.keys(['count', 'rows']);
     expect(usersAsc.rows.length).to.equal(5);
     expect(usersAsc.rows[0]).to.have.all.keys(ENTITY.fields);
@@ -123,7 +123,7 @@ describe('User repository', function () {
 
     const lastPage = Math.ceil(usersAsc.count / 5);
     const itemsOnLastPage = usersAsc.count - ((lastPage - 1) * 5);
-    const usersDesc = await repository.getAllUsers(true, lastPage, 5, [['createdAt', 'Desc']]);
+    const usersDesc = await repository.getAll(true, lastPage, 5, [['createdAt', 'Desc']]);
     expect(usersDesc).to.have.all.keys(['count', 'rows']);
     expect(usersDesc.rows.length).to.equal(itemsOnLastPage);
     expect(usersDesc.rows[itemsOnLastPage - 1]).to.have.all.keys(ENTITY.fields);
