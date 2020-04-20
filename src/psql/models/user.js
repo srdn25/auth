@@ -52,10 +52,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = function(models) {
-    User.hasMany(models.session, {
+    User.hasMany(models.session);
+    User.belongsTo(models.server, {
       onDelete: 'CASCADE',
     });
-    User.belongsTo(models.server);
   };
 
   return User;

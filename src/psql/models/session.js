@@ -28,7 +28,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Session.associate = function(models) {
-    Session.belongsTo(models.user);
+    Session.belongsTo(models.user, {
+      onDelete: 'CASCADE',
+    });
   };
 
   return Session;
