@@ -116,11 +116,26 @@ describe('User repository', function () {
       }, true);
     }
 
-    const users = await repository.findByServerId(server.id, true, 1, 15);
+    const users = await repository.findByServerId(server.id, true, 1, 10);
     expect(users).to.have.all.keys(['count', 'rows']);
-    expect(users.count).to.equal(users.rows.length);
-    expect(users.rows.length).to.equal(11);
+    expect(users.rows.length).to.equal(10);
     expect(users.rows[0]).to.have.all.keys(ENTITY.fields);
     expect(users.rows[0]).to.deep.equal(User);
+  });
+
+  it('Get all users with paginate and order', async () => {
+    const usersAsc = await repository.getAllUsers(true, 1, 5, [['createdAt', 'ASC']]);
+    expect(usersAsc).to.have.all.keys(['count', 'rows']);
+    expect(usersAsc.rows.length).to.equal(5);
+    expect(usersAsc.rows[0]).to.have.all.keys(ENTITY.fields);
+    expect(usersAsc.rows[0]).to.deep.equal(User);
+
+    const lastPage = Math.ceil(usersAsc.count / 5);
+    const itemsOnLastPage = usersAsc.count - ((lastPage - 1) * 5);
+    const usersDesc = await repository.getAllUsers(true, lastPage, 5, [['createdAt', 'Desc']]);
+    expect(usersDesc).to.have.all.keys(['count', 'rows']);
+    expect(usersDesc.rows.length).to.equal(itemsOnLastPage);
+    expect(usersDesc.rows[itemsOnLastPage - 1]).to.have.all.keys(ENTITY.fields);
+    expect(usersDesc.rows[itemsOnLastPage - 1]).to.deep.equal(User);
   });
 });

@@ -58,6 +58,21 @@ const findByServerId = async (
   return getPlainFromSequelize(result, raw);
 };
 
+const getAllUsers = async (
+  raw = true,
+  page = 1,
+  perPage = config.psql.usersAllPerPage,
+  order = [['createdAt', 'ASC']],
+) => {
+  const result = await psql.user.findAndCountAll({
+    limit: perPage + ((page - 1) * perPage),
+    offset: ((page - 1) * perPage),
+    order,
+    raw,
+  });
+  return getPlainFromSequelize(result, raw);
+};
+
 const removeById = async (id) => {
   const result = await psql.user.destroy({ where: { id } });
   return !!result;
@@ -68,5 +83,6 @@ module.exports = {
   findById,
   findByEmail,
   findByServerId,
+  getAllUsers,
   removeById,
 };
