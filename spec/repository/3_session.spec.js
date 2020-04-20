@@ -1,4 +1,5 @@
 const { Sequelize } = require('../../src/psql/models');
+const { lastPage, itemsOnLastPage } = require('../../src/helper');
 const {
   session: repository,
   user: userRepo,
@@ -62,6 +63,53 @@ describe('Session repository', function () {
 
     expect(session).to.have.all.keys(ENTITY.fields);
     expect(session).to.deep.equal(Session);
+  });
+
+  it('Get all sessions with paginate and order', async () => {
+    for(let i = 0; i < 10; i++) {
+      await repository.create({
+        ...ENTITY.raw,
+        token: `token_${i}`,
+        userId: Session.userId,
+      }, true);
+    };
+
+    const sessionsAsc = await repository.getAll({
+      page: 1,
+      perPage: 5,
+      order: [['createdAt', 'ASC']],
+    });
+    expect(sessionsAsc).to.have.all.keys(['count', 'rows']);
+    expect(sessionsAsc.rows.length).to.equal(5);
+    expect(sessionsAsc.rows[0]).to.have.all.keys(ENTITY.fields);
+    expect(sessionsAsc.rows[0]).to.deep.equal(Session);
+
+    const lastPageCalc = lastPage(sessionsAsc.count, 5);
+    const itemsOnLastPageCalc = itemsOnLastPage(sessionsAsc.count, 5);
+
+    const sessionsDesc = await repository.getAll({
+      page: lastPageCalc,
+      perPage: 5,
+      order: [['createdAt', 'DESC']],
+    });
+    expect(sessionsDesc).to.have.all.keys(['count', 'rows']);
+    expect(sessionsDesc.rows.length).to.equal(itemsOnLastPageCalc);
+    expect(sessionsDesc.rows[itemsOnLastPageCalc - 1]).to.have.all.keys(ENTITY.fields);
+    expect(sessionsDesc.rows[itemsOnLastPageCalc - 1]).to.deep.equal(Session);
+  });
+
+  it('Get all sessions can find by', async () => {
+    const sessions = await repository.getAll({
+      page: 1,
+      perPage: 5,
+      findBy: {
+        token: ENTITY.raw.token,
+      },
+    });
+    expect(sessions).to.have.all.keys(['count', 'rows']);
+    expect(sessions.rows.length).to.equal(1);
+    expect(sessions.rows[0]).to.have.all.keys(ENTITY.fields);
+    expect(sessions.rows[0]).to.deep.equal(Session);
   });
 
   it('Delete session by WRONG ID', async () => {

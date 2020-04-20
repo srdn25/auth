@@ -14,5 +14,6 @@ module.exports = {
     userByServerPerPage: 15,
     usersAllPerPage: 15,
     serversAllPerPage: 15,
+    sessionsAllPerPage: 15,
   }
 };

@@ -1,4 +1,5 @@
 const psql = require('../psql/models');
+const config = require('../config');
 const { getPlainFromSequelize } = require('../helper');
 
 const create = async (data, raw = true) => {
@@ -25,6 +26,23 @@ const findBy = async (findBy, raw = true, relations = false) => {
   return getPlainFromSequelize(result, raw);
 };
 
+const getAll = async ({
+  raw = true,
+  page = 1,
+  perPage = config.psql.sessionsAllPerPage,
+  order = [['createdAt', 'ASC']],
+  findBy,
+}) => {
+  const result = await psql.session.findAndCountAll({
+    limit: perPage + ((page - 1) * perPage),
+    offset: ((page - 1) * perPage),
+    order,
+    raw,
+    ...(findBy && { where: { ...findBy } }),
+  });
+  return getPlainFromSequelize(result, raw);
+};
+
 const removeById = async (id) => {
   const result = await psql.session.destroy({ where: { id } });
   return !!result;
@@ -33,5 +51,6 @@ const removeById = async (id) => {
 module.exports = {
   create,
   findBy,
+  getAll,
   removeById,
 };
