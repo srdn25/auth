@@ -26,7 +26,23 @@ const findBy = async (findBy, raw = true, relations = false) => {
   return getPlainFromSequelize(result, raw);
 };
 
+const getAll = async (
+  raw = true,
+  page = 1,
+  perPage = config.psql.serversAllPerPage,
+  order = [['createdAt', 'ASC']],
+) => {
+  const result = await psql.server.findAndCountAll({
+    limit: perPage + ((page - 1) * perPage),
+    offset: ((page - 1) * perPage),
+    order,
+    raw,
+  });
+  return getPlainFromSequelize(result, raw);
+};
+
 module.exports = {
   create,
   findBy,
+  getAll,
 };

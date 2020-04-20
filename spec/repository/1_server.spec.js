@@ -11,6 +11,15 @@ describe('Server repository', function () {
     Server = await repository.create(ENTITY.raw);
 
     expect(Server).to.have.all.keys(ENTITY.fields);
+
+    for(let i = 0; i < 10; i++) {
+      await repository.create({
+        ...ENTITY.raw,
+        slug: `server_${i}`,
+        name: `Name ${i}`,
+        url: `http://link${i}.com`
+      }, true);
+    }
   });
 
   it('Create server can return Sequelize object', async () => {
@@ -101,5 +110,21 @@ describe('Server repository', function () {
 
     expect(server instanceof Sequelize.Model).to.be.true;
     expect(server.toJSON()).to.have.all.keys(ENTITY.fields);
+  });
+
+  it('Get all servers with paginate and order', async () => {
+    const serversAsc = await repository.getAll(true, 1, 3, [['createdAt', 'ASC']]);
+    expect(serversAsc).to.have.all.keys(['count', 'rows']);
+    expect(serversAsc.rows.length).to.equal(3);
+    expect(serversAsc.rows[0]).to.have.all.keys(ENTITY.fields);
+    expect(serversAsc.rows[0]).to.deep.equal(Server);
+
+    const lastPage = Math.ceil(serversAsc.count / 3);
+    const itemsOnLastPage = serversAsc.count - ((lastPage - 1) * 3);
+    const serversDesc = await repository.getAll(true, lastPage, 3, [['createdAt', 'Desc']]);
+    expect(serversDesc).to.have.all.keys(['count', 'rows']);
+    expect(serversDesc.rows.length).to.equal(itemsOnLastPage);
+    expect(serversDesc.rows[itemsOnLastPage - 1]).to.have.all.keys(ENTITY.fields);
+    expect(serversDesc.rows[itemsOnLastPage - 1]).to.deep.equal(Server);
   });
 });
