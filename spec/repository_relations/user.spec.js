@@ -7,7 +7,7 @@ const {
 describe('Session relations repository', function () {
   let User;
   it('User has many sessions in findByEmail', async () => {
-    User = await repository.findByEmail(ENTITY.raw.email, true, true);
+    User = await repository.findBy({ email: ENTITY.raw.email }, true, true);
 
     expect(User).to.have.all.keys([...ENTITY.fields, 'sessions']);
     expect(User.sessions.length).to.equal(1);
@@ -15,7 +15,7 @@ describe('Session relations repository', function () {
   });
 
   it('User has many sessions in findById', async () => {
-    User = await repository.findById(User.id, true, true);
+    User = await repository.findBy({ id: User.id }, true, true);
 
     expect(User).to.have.all.keys([...ENTITY.fields, 'sessions']);
     expect(User.sessions.length).to.equal(1);

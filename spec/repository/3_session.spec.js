@@ -5,14 +5,14 @@ const {
 } = require('../../src/repository');
 const {
   session: ENTITY,
-  user: ENTITY_USER,
+  user: { raw: { email: USER_EMAIL } },
   sequelize: { error: { keys: SEQUELIZE_ERROR_KEYS } }
 } = require('../entities.json');
 
 describe('Session repository', function () {
   let Session;
   it('Create session', async () => {
-    const user = await userRepo.findByEmail(ENTITY_USER.raw.email);
+    const user = await userRepo.findBy({ email: USER_EMAIL });
     Session = await repository.create({
       ...ENTITY.raw,
       userId: user.id,

@@ -12,24 +12,13 @@ const create = async (data, raw = true) => {
   return getPlainFromSequelize(result, raw);
 };
 
-const findById = async (id, raw = true, relations = false) => {
+/*
+ * Find by ID or Email only!
+ * @param {object} findBy Should be like { id } or { email }
+ */
+const findBy = async (findBy, raw = true, relations = false) => {
   const result = await psql.user.findOne({
-    where: { id },
-    ...(relations && {
-      include: [
-        {
-          model: psql.session,
-          limit: config.psql.countSessionsInInclude,
-        }
-      ]
-    }),
-  });
-  return getPlainFromSequelize(result, raw);
-};
-
-const findByEmail = async (email, raw = true, relations  = false) => {
-  const result = await psql.user.findOne({
-    where: { email },
+    where: { ...findBy },
     ...(relations && {
       include: [
         {
@@ -80,8 +69,7 @@ const removeById = async (id) => {
 
 module.exports = {
   create,
-  findById,
-  findByEmail,
+  findBy,
   findByServerId,
   getAllUsers,
   removeById,
