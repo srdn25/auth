@@ -24,6 +24,9 @@ const findBy = async (findBy, raw = true, relations = false) => {
         {
           model: psql.session,
           limit: config.psql.countSessionsInInclude,
+        },
+        {
+          model: psql.server,
         }
       ]
     }),
