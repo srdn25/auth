@@ -52,6 +52,7 @@ const findByServerId = async (
     where: { serverId },
     limit: perPage + ((page - 1) * perPage),
     offset: ((page - 1) * perPage),
+    order: [['createdAt', 'ASC']],
     raw,
   });
   return getPlainFromSequelize(result, raw);

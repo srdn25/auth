@@ -102,6 +102,7 @@ describe('User repository', function () {
     }, false);
 
     expect(user instanceof Sequelize.Model).to.be.true;
+    User = user.toJSON();
   });
 
   it('Find users by serverId with paginate', async () => {
@@ -120,5 +121,6 @@ describe('User repository', function () {
     expect(users.count).to.equal(users.rows.length);
     expect(users.rows.length).to.equal(11);
     expect(users.rows[0]).to.have.all.keys(ENTITY.fields);
+    expect(users.rows[0]).to.deep.equal(User);
   });
 });
