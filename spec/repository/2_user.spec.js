@@ -1,4 +1,5 @@
 const { Sequelize } = require('../../src/psql/models');
+const { lastPage, itemsOnLastPage } = require('../../src/helper');
 const {
   user: repository,
   server: serverRepo,
@@ -121,12 +122,13 @@ describe('User repository', function () {
     expect(usersAsc.rows[0]).to.have.all.keys(ENTITY.fields);
     expect(usersAsc.rows[0]).to.deep.equal(User);
 
-    const lastPage = Math.ceil(usersAsc.count / 5);
-    const itemsOnLastPage = usersAsc.count - ((lastPage - 1) * 5);
-    const usersDesc = await repository.getAll(true, lastPage, 5, [['createdAt', 'Desc']]);
+    const lastPageCalc = lastPage(usersAsc.count, 5);
+    const itemsOnLastPageCalc = itemsOnLastPage(usersAsc.count, 5);
+
+    const usersDesc = await repository.getAll(true, lastPageCalc, 5, [['createdAt', 'Desc']]);
     expect(usersDesc).to.have.all.keys(['count', 'rows']);
-    expect(usersDesc.rows.length).to.equal(itemsOnLastPage);
-    expect(usersDesc.rows[itemsOnLastPage - 1]).to.have.all.keys(ENTITY.fields);
-    expect(usersDesc.rows[itemsOnLastPage - 1]).to.deep.equal(User);
+    expect(usersDesc.rows.length).to.equal(itemsOnLastPageCalc);
+    expect(usersDesc.rows[itemsOnLastPageCalc - 1]).to.have.all.keys(ENTITY.fields);
+    expect(usersDesc.rows[itemsOnLastPageCalc - 1]).to.deep.equal(User);
   });
 });
