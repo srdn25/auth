@@ -5,8 +5,8 @@ const create = async (data, raw = true) => {
   const result = await psql.session.create(data);
   return getPlainFromSequelize(result, raw);
 };
-const findById = async (id, raw = true) => {
-  const result = await psql.session.findOne({ where: { id }, raw });
+const findBy = async (findBy, raw = true) => {
+  const result = await psql.session.findOne({ where: { ...findBy }, raw });
   return getPlainFromSequelize(result, raw);
 };
 const removeById = async (id) => {
@@ -16,6 +16,6 @@ const removeById = async (id) => {
 
 module.exports = {
   create,
-  findById,
+  findBy,
   removeById,
 };
