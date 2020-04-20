@@ -36,6 +36,7 @@ module.exports = {
           model: 'server',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       type: {
         type: Sequelize.ENUM(userAuthTypeList)

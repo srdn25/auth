@@ -14,7 +14,8 @@ module.exports = {
         references: {
           model: 'user',
           key: 'id',
-        }
+        },
+        onDelete: 'CASCADE',
       },
       ip: {
         type: Sequelize.STRING,
