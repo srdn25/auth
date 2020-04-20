@@ -35,7 +35,7 @@ module.exports = {
         references: {
           model: 'server',
           key: 'id',
-        }
+        },
       },
       type: {
         type: Sequelize.ENUM(userAuthTypeList)

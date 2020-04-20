@@ -27,7 +27,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Server.associate = function(models) {
-    Server.hasMany(models.user);
+    Server.hasMany(models.user, {
+      onDelete: 'CASCADE',
+    });
   };
 
   return Server;
