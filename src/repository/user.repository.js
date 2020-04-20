@@ -62,17 +62,19 @@ const findByServerId = async (
   return getPlainFromSequelize(result, raw);
 };
 
-const getAll = async (
+const getAll = async ({
   raw = true,
   page = 1,
   perPage = config.psql.usersAllPerPage,
   order = [['createdAt', 'ASC']],
-) => {
+  findBy,
+}) => {
   const result = await psql.user.findAndCountAll({
     limit: perPage + ((page - 1) * perPage),
     offset: ((page - 1) * perPage),
     order,
     raw,
+    ...(findBy && { where: { ...findBy } }),
   });
   return getPlainFromSequelize(result, raw);
 };

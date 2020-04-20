@@ -53,9 +53,15 @@ const update = async (data, findBy) => {
   return updatedRows;
 };
 
+const removeById = async (id) => {
+  const result = await psql.server.destroy({ where: { id } });
+  return !!result;
+};
+
 module.exports = {
   create,
   findBy,
   getAll,
   update,
+  removeById,
 };
