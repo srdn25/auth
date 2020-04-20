@@ -7,24 +7,13 @@ const create = async (data, raw = true) => {
   return getPlainFromSequelize(result, raw);
 };
 
-const findById = async (id, raw = true, relations = false) => {
+/*
+ * Find by ID or Slug only!
+ * @param {object} findBy Should be like { id } or { slug }
+ */
+const findBy = async (findBy, raw = true, relations = false) => {
   const result = await psql.server.findOne({
-    where: { id },
-    ...(relations && {
-      include: [
-        {
-          model: psql.user,
-          limit: config.psql.countUsersInInclude,
-        }
-      ]
-    }),
-  });
-  return getPlainFromSequelize(result, raw);
-};
-
-const findBySlug = async (slug, raw = true, relations = false) => {
-  const result = await psql.server.findOne({
-    where: { slug },
+    where: { ...findBy },
     ...(relations && {
       include: [
         {
@@ -39,6 +28,5 @@ const findBySlug = async (slug, raw = true, relations = false) => {
 
 module.exports = {
   create,
-  findById,
-  findBySlug,
+  findBy,
 };

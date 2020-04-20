@@ -6,19 +6,19 @@ const {
 
 describe('Server relations repository', function () {
   let Server;
-  it('Server has many users in findBySlug', async () => {
-    Server = await repository.findBySlug(ENTITY.raw.slug, true, true);
+  it('Server has many users in findBy', async () => {
+    Server = await repository.findBy({
+      slug: ENTITY.raw.slug
+    }, true, true);
 
     expect(Server).to.have.all.keys([...ENTITY.fields, 'users']);
     expect(Server.users.length).to.equal(7);
     expect(Server.users[0]).to.have.all.keys(ENTITY_USER.fields);
-  });
 
-  it('Server has many users in findById', async () => {
-    Server = await repository.findById(Server.id, true, true);
+    const serverById = await repository.findBy({ id: Server.id }, true, true);
 
-    expect(Server).to.have.all.keys([...ENTITY.fields, 'users']);
-    expect(Server.users.length).to.equal(7);
-    expect(Server.users[0]).to.have.all.keys(ENTITY_USER.fields);
+    expect(serverById).to.have.all.keys([...ENTITY.fields, 'users']);
+    expect(serverById.users.length).to.equal(7);
+    expect(serverById.users[0]).to.have.all.keys(ENTITY_USER.fields);
   });
 });

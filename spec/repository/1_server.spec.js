@@ -84,29 +84,20 @@ describe('Server repository', function () {
     expect(awaitError.errors[0].message).to.equal('url must be unique');
   });
 
-  it('Find server by ID', async () => {
-    const server = await repository.findById(Server.id);
+  it('Find server by ID or Slug', async () => {
+    const serverById = await repository.findBy({ id: Server.id });
 
-    expect(server).to.have.all.keys(ENTITY.fields);
-    expect(server).to.deep.equal(Server);
+    expect(serverById).to.have.all.keys(ENTITY.fields);
+    expect(serverById).to.deep.equal(Server);
+
+    const serverBySlug = await repository.findBy({ slug: Server.slug });
+
+    expect(serverBySlug).to.have.all.keys(ENTITY.fields);
+    expect(serverBySlug).to.deep.equal(Server);
   });
 
-  it('FindById server can return Sequelize object', async () => {
-    const server = await repository.findById(Server.id, false);
-
-    expect(server instanceof Sequelize.Model).to.be.true;
-    expect(server.toJSON()).to.have.all.keys(ENTITY.fields);
-  });
-
-  it('Find server by slug', async () => {
-    const server = await repository.findBySlug(Server.slug);
-
-    expect(server).to.have.all.keys(ENTITY.fields);
-    expect(server).to.deep.equal(Server);
-  });
-
-  it('FindBySlug server can return Sequelize object', async () => {
-    const server = await repository.findBySlug(Server.slug, false);
+  it('FindBy server can return Sequelize object', async () => {
+    const server = await repository.findBy({ id: Server.id }, false);
 
     expect(server instanceof Sequelize.Model).to.be.true;
     expect(server.toJSON()).to.have.all.keys(ENTITY.fields);
