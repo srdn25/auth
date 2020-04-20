@@ -41,8 +41,21 @@ const getAll = async (
   return getPlainFromSequelize(result, raw);
 };
 
+/*
+ * Update user. In findBy use ID or slug. Or url
+ */
+const update = async (data, findBy) => {
+  const [ updatedRows ] = await psql.server.update(
+    { ...data },
+    { where: { ...findBy } },
+  );
+
+  return updatedRows;
+};
+
 module.exports = {
   create,
   findBy,
   getAll,
+  update,
 };

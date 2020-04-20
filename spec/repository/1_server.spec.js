@@ -129,4 +129,15 @@ describe('Server repository', function () {
     expect(serversDesc.rows[itemsOnLastPageCalc - 1]).to.have.all.keys(ENTITY.fields);
     expect(serversDesc.rows[itemsOnLastPageCalc - 1]).to.deep.equal(Server);
   });
+
+  it('Update server', async () => {
+    const updateData = { name: 'SERVER is Updated' };
+    const updatedRows = await repository.update(updateData, { id: Server.id });
+
+    expect(updatedRows).to.equal(1);
+
+    const updatedServer = await repository.findBy({ id: Server.id });
+    expect(updatedServer).to.have.all.keys(ENTITY.fields);
+    expect(updatedServer.name).to.equal(updateData.name);
+  });
 });
