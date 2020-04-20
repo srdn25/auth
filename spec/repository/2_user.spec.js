@@ -131,4 +131,15 @@ describe('User repository', function () {
     expect(usersDesc.rows[itemsOnLastPageCalc - 1]).to.have.all.keys(ENTITY.fields);
     expect(usersDesc.rows[itemsOnLastPageCalc - 1]).to.deep.equal(User);
   });
+
+  it('Update user', async () => {
+    const updateData = { name: 'updated Name' };
+    const updatedRows = await repository.update(updateData, { id: User.id });
+
+    expect(updatedRows).to.equal(1);
+
+    const updatedUser = await repository.findBy({ id: User.id });
+    expect(updatedUser).to.have.all.keys(ENTITY.fields);
+    expect(updatedUser.name).to.equal(updateData.name);
+  });
 });

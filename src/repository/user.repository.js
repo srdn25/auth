@@ -34,6 +34,18 @@ const findBy = async (findBy, raw = true, relations = false) => {
   return getPlainFromSequelize(result, raw);
 };
 
+/*
+ * Update user. In findBy preference use ID of user. Or email + serverId
+ */
+const update = async (data, findBy) => {
+  const [ updatedRows ] = await psql.user.update(
+    { ...data },
+    { where: { ...findBy } },
+  );
+
+  return updatedRows;
+};
+
 const findByServerId = async (
   serverId,
   raw = true,
@@ -76,4 +88,5 @@ module.exports = {
   findByServerId,
   getAll,
   removeById,
+  update,
 };
