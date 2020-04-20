@@ -12,6 +12,32 @@ describe('Server repository', function () {
     Server = await repository.create(ENTITY.raw);
 
     expect(Server).to.have.all.keys(ENTITY.fields);
+  });
+
+  it('Delete server by WRONG ID', async () => {
+    const result = await repository.removeById(12345);
+
+    const checkServer = await repository.findBy({ id: Server.id });
+
+    expect(result).to.be.false;
+    expect(checkServer).to.deep.equal(Server);
+  });
+
+  it('Delete server by ID', async () => {
+    const result = await repository.removeById(Server.id);
+
+    const checkServer = await repository.findBy({ id: Server.id });
+
+    expect(result).to.be.true;
+    expect(checkServer).to.equal(null);
+  });
+
+  it('Create server can return Sequelize object', async () => {
+    const server = await repository.create(ENTITY.raw, false);
+
+    expect(server instanceof Sequelize.Model).to.be.true;
+
+    Server = server.toJSON();
 
     for(let i = 0; i < 10; i++) {
       await repository.create({
@@ -21,17 +47,6 @@ describe('Server repository', function () {
         url: `http://link${i}.com`
       }, true);
     }
-  });
-
-  it('Create server can return Sequelize object', async () => {
-    const server = await repository.create({
-      ...ENTITY.raw,
-      slug: 'raw_object',
-      name: 'Other server for check Sequelize',
-      url: 'http://google.com',
-    }, false);
-
-    expect(server instanceof Sequelize.Model).to.be.true;
   });
 
   it('Create server. Slug should be unique', async () => {
