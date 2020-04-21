@@ -150,4 +150,34 @@ describe('User repository', function () {
     expect(updatedUser).to.have.all.keys(ENTITY.fields);
     expect(updatedUser.name).to.equal(updateData.name);
   });
+
+  it('Update user INFO jsonb', async () => {
+    const jsonbInfo = { info: { game: 1, cash: 123 } };
+
+    const updatedRows = await repository.update(jsonbInfo, { id: User.id });
+
+    expect(updatedRows).to.equal(1);
+
+    const updatedUser = await repository.findBy({ by: { id: User.id } });
+    expect(updatedUser).to.have.all.keys(ENTITY.fields);
+    expect(updatedUser.info).to.have.all.keys(Object.keys(jsonbInfo.info));
+    expect(updatedUser.info.game).to.equal(jsonbInfo.info.game);
+    expect(updatedUser.info.cash).to.equal(jsonbInfo.info.cash);
+
+    const updatedRowsInfo = await repository.update({
+      info: {
+        ...updatedUser.info,
+        newField: 'abc',
+      },
+    }, { id: User.id });
+
+    expect(updatedRowsInfo).to.equal(1);
+
+    const updatedUserInfo = await repository.findBy({ by: { id: User.id } });
+    expect(updatedUserInfo).to.have.all.keys(ENTITY.fields);
+    expect(updatedUserInfo.info).to.have.all.keys([...Object.keys(jsonbInfo.info), 'newField']);
+    expect(updatedUserInfo.info.game).to.equal(jsonbInfo.info.game);
+    expect(updatedUserInfo.info.cash).to.equal(jsonbInfo.info.cash);
+    expect(updatedUserInfo.info.newField).to.equal('abc');
+  });
 });
