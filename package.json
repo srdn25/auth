@@ -19,8 +19,7 @@
     "docker:app:stop": "docker-compose stop app",
     "docker:app:start": "docker-compose start app",
     "docker:stop": "docker-compose stop",
-    "test": "node ./node_modules/.bin/mocha --inspect=9239 spec/index.spec.js",
-    "coverage": "nyc npm run test"
+    "test": "node ./node_modules/.bin/mocha --inspect=9239 spec/index.spec.js"
   },
   "husky": {
     "hooks": {
@@ -56,6 +55,7 @@
     "koa-router": "^8.0.8",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.3",
+    "openapi-backend": "^3.4.1",
     "pg": "^8.0.2",
     "pg-hstore": "^2.3.3",
     "redis": "^3.0.2",

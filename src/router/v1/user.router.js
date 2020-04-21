@@ -2,8 +2,8 @@ const Router = require('koa-router');
 
 const router = new Router({ prefix: '/user' });
 
-router.get('/ping', (ctx) => {
-  ctx.body = { msg: 'pong' };
+router.post('/', (ctx) => {
+  ctx.requrest.body;
 });
 
 module.exports = router;
