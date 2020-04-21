@@ -12,7 +12,7 @@ describe('Session relations repository', function () {
   let Session;
   it('FindBy. Session belongs to user and user belongs to server', async () => {
     const user = await userRepo.findBy({ by: { email: USER_EMAIL } });
-    Session = await repository.findBy({ userId: user.id }, true, true);
+    Session = await repository.findBy({ by: { userId: user.id }, relations: true });
 
     expect(Session).to.have.all.keys([...ENTITY.fields, 'user']);
     expect(Session.user).to.be.an('object');

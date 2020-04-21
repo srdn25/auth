@@ -52,14 +52,14 @@ describe('Session repository', function () {
   });
 
   it('FindBy session can return Sequelize object', async () => {
-    const session = await repository.findBy({ id: Session.id }, false);
+    const session = await repository.findBy({ by: { id: Session.id }, raw: false });
 
     expect(session instanceof Sequelize.Model).to.be.true;
     expect(session.toJSON()).to.have.all.keys(ENTITY.fields);
   });
 
   it('Find session', async () => {
-    const session = await repository.findBy({ id: Session.id });
+    const session = await repository.findBy({ by: { id: Session.id } });
 
     expect(session).to.have.all.keys(ENTITY.fields);
     expect(session).to.deep.equal(Session);
@@ -115,7 +115,7 @@ describe('Session repository', function () {
   it('Delete session by WRONG ID', async () => {
     const result = await repository.removeById(12345);
 
-    const checkSession = await repository.findBy({ id: Session.id });
+    const checkSession = await repository.findBy({ by: { id: Session.id } });
 
     expect(result).to.be.false;
     expect(checkSession).to.deep.equal(Session);
@@ -124,7 +124,7 @@ describe('Session repository', function () {
   it('Delete session by ID', async () => {
     const result = await repository.removeById(Session.id);
 
-    const checkSession = await repository.findBy({ id: Session.id });
+    const checkSession = await repository.findBy({ by: { id: Session.id } });
 
     expect(result).to.be.true;
     expect(checkSession).to.equal(null);
