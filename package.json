@@ -19,7 +19,8 @@
     "docker:app:stop": "docker-compose stop app",
     "docker:app:start": "docker-compose start app",
     "docker:stop": "docker-compose stop",
-    "test": "node ./node_modules/.bin/mocha --inspect=9239 spec/index.spec.js"
+    "test": "node ./node_modules/.bin/mocha --inspect=9239 spec/index.spec.js",
+    "coverage": "nyc npm run test"
   },
   "husky": {
     "hooks": {
