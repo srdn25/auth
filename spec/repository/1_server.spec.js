@@ -17,7 +17,7 @@ describe('Server repository', function () {
   it('Delete server by WRONG ID', async () => {
     const result = await repository.removeById(12345);
 
-    const checkServer = await repository.findBy({ id: Server.id });
+    const checkServer = await repository.findBy({ by: { id: Server.id } });
 
     expect(result).to.be.false;
     expect(checkServer).to.deep.equal(Server);
@@ -26,7 +26,7 @@ describe('Server repository', function () {
   it('Delete server by ID', async () => {
     const result = await repository.removeById(Server.id);
 
-    const checkServer = await repository.findBy({ id: Server.id });
+    const checkServer = await repository.findBy({ by: { id: Server.id } });
 
     expect(result).to.be.true;
     expect(checkServer).to.equal(null);
@@ -45,7 +45,7 @@ describe('Server repository', function () {
         slug: `server_${i}`,
         name: `Name ${i}`,
         url: `http://link${i}.com`
-      }, true);
+      });
     }
   });
 
@@ -110,26 +110,33 @@ describe('Server repository', function () {
   });
 
   it('Find server by ID or Slug', async () => {
-    const serverById = await repository.findBy({ id: Server.id });
+    const serverById = await repository.findBy({ by: { id: Server.id } });
 
     expect(serverById).to.have.all.keys(ENTITY.fields);
     expect(serverById).to.deep.equal(Server);
 
-    const serverBySlug = await repository.findBy({ slug: Server.slug });
+    const serverBySlug = await repository.findBy({ by: { slug: Server.slug } });
 
     expect(serverBySlug).to.have.all.keys(ENTITY.fields);
     expect(serverBySlug).to.deep.equal(Server);
   });
 
   it('FindBy server can return Sequelize object', async () => {
-    const server = await repository.findBy({ id: Server.id }, false);
+    const server = await repository.findBy({
+      by: { id: Server.id },
+      raw: false
+    });
 
     expect(server instanceof Sequelize.Model).to.be.true;
     expect(server.toJSON()).to.have.all.keys(ENTITY.fields);
   });
 
   it('Get all servers with paginate and order', async () => {
-    const serversAsc = await repository.getAll(true, 1, 3, [['createdAt', 'ASC']]);
+    const serversAsc = await repository.getAll({
+      page: 1,
+      perPage: 3,
+      order: [['createdAt', 'ASC']],
+    });
     expect(serversAsc).to.have.all.keys(['count', 'rows']);
     expect(serversAsc.rows.length).to.equal(3);
     expect(serversAsc.rows[0]).to.have.all.keys(ENTITY.fields);
@@ -138,7 +145,11 @@ describe('Server repository', function () {
     const lastPageCalc = lastPage(serversAsc.count, 3);
     const itemsOnLastPageCalc = itemsOnLastPage(serversAsc.count, 3);
 
-    const serversDesc = await repository.getAll(true, lastPageCalc, 3, [['createdAt', 'Desc']]);
+    const serversDesc = await repository.getAll({
+      page: lastPageCalc,
+      perPage: 3,
+      order: [['createdAt', 'DESC']],
+    });
     expect(serversDesc).to.have.all.keys(['count', 'rows']);
     expect(serversDesc.rows.length).to.equal(itemsOnLastPageCalc);
     expect(serversDesc.rows[itemsOnLastPageCalc - 1]).to.have.all.keys(ENTITY.fields);
@@ -151,7 +162,7 @@ describe('Server repository', function () {
 
     expect(updatedRows).to.equal(1);
 
-    const updatedServer = await repository.findBy({ id: Server.id });
+    const updatedServer = await repository.findBy({ by: { id: Server.id } });
     expect(updatedServer).to.have.all.keys(ENTITY.fields);
     expect(updatedServer.name).to.equal(updateData.name);
   });

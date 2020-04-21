@@ -13,14 +13,18 @@ describe('Server relations repository', function () {
   let Server;
   it('Server has many users in findBy', async () => {
     Server = await repository.findBy({
-      slug: ENTITY.raw.slug
-    }, true, true);
+      by: { slug: ENTITY.raw.slug },
+      relations: true,
+    });
 
     expect(Server).to.have.all.keys([...ENTITY.fields, 'users']);
     expect(Server.users.length).to.equal(7);
     expect(Server.users[0]).to.have.all.keys(ENTITY_USER.fields);
 
-    const serverById = await repository.findBy({ id: Server.id }, true, true);
+    const serverById = await repository.findBy({
+      by: { id: Server.id },
+      relations: true,
+    });
 
     expect(serverById).to.have.all.keys([...ENTITY.fields, 'users']);
     expect(serverById.users.length).to.equal(7);

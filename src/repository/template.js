@@ -13,13 +13,16 @@ module.exports = function (model) {
      * @param {object} findBy Should be like { id } or { email }
      */
     findBy: async ({
-      findBy,
+      by,
       raw = true,
       relations = false,
     }, include) => {
+      if (!by) {
+        throw new Error('required "by" field');
+      }
       const result = await model.findOne({
-        where: { ...findBy },
-        ...(relations && include && { include }),
+        where: { ...by },
+        ...(relations && { include }),
       });
       return getPlainFromSequelize(result, raw);
     },

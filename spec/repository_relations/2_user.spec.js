@@ -32,7 +32,7 @@ describe('User relations repository', function () {
 
   it('After delete user, all sessions belongs to this user, should remove', async () => {
     const countSessions = 7;
-    const server = await serverRepo.findBy({ slug: SERVER_SLUG });
+    const server = await serverRepo.findBy({ by: { slug: SERVER_SLUG } });
     const user = await repository.create({
       ...ENTITY.raw,
       serverId: server.id,

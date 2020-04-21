@@ -13,7 +13,7 @@ const {
 describe('User repository', function () {
   let User;
   it('Create user', async () => {
-    const server = await serverRepo.findBy({ slug: SERVER_SLUG });
+    const server = await serverRepo.findBy({ by: { slug: SERVER_SLUG } });
     User = await repository.create({
       ...ENTITY.raw,
       serverId: server.id,
@@ -87,7 +87,7 @@ describe('User repository', function () {
   });
 
   it('Create user can return Sequelize object', async () => {
-    const server = await serverRepo.findBy({ slug: SERVER_SLUG });
+    const server = await serverRepo.findBy({ by: { slug: SERVER_SLUG } });
     const user = await repository.create({
       ...ENTITY.raw,
       serverId: server.id,
@@ -98,14 +98,14 @@ describe('User repository', function () {
   });
 
   it('Find users by serverId with paginate', async () => {
-    const server = await serverRepo.findBy({ slug: SERVER_SLUG });
+    const server = await serverRepo.findBy({ by: { slug: SERVER_SLUG } });
 
     for(let i = 0; i < 10; i++) {
       await repository.create({
         ...ENTITY.raw,
         serverId: server.id,
         email: `user_${i}@mail.com`,
-      }, true);
+      });
     }
 
     const users = await repository.findByServerId(server.id, true, 1, 10);

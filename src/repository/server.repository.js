@@ -1,67 +1,16 @@
 const psql = require('../psql/models');
 const config = require('../config');
-const { getPlainFromSequelize } = require('../helper');
+const templateRepo = require('./template');
 
-const create = async (data, raw = true) => {
-  const result = await psql.server.create(data);
-  return getPlainFromSequelize(result, raw);
-};
+const template = templateRepo(psql.server);
 
-/*
- * Find by ID or Slug only!
- * @param {object} findBy Should be like { id } or { slug }
- */
-const findBy = async (findBy, raw = true, relations = false) => {
-  const result = await psql.server.findOne({
-    where: { ...findBy },
-    ...(relations && {
-      include: [
-        {
-          model: psql.user,
-          limit: config.psql.countUsersInInclude,
-        }
-      ]
-    }),
-  });
-  return getPlainFromSequelize(result, raw);
-};
+const repository = Object.assign({}, template, {
+  findBy: (options) => template.findBy(options, [
+    {
+      model: psql.user,
+      limit: config.psql.countUsersInInclude,
+    }
+  ])
+});
 
-const getAll = async (
-  raw = true,
-  page = 1,
-  perPage = config.psql.modelPerPage,
-  order = [['createdAt', 'ASC']],
-) => {
-  const result = await psql.server.findAndCountAll({
-    limit: perPage + ((page - 1) * perPage),
-    offset: ((page - 1) * perPage),
-    order,
-    raw,
-  });
-  return getPlainFromSequelize(result, raw);
-};
-
-/*
- * Update user. In findBy use ID or slug. Or url
- */
-const update = async (data, findBy) => {
-  const [ updatedRows ] = await psql.server.update(
-    { ...data },
-    { where: { ...findBy } },
-  );
-
-  return updatedRows;
-};
-
-const removeById = async (id) => {
-  const result = await psql.server.destroy({ where: { id } });
-  return !!result;
-};
-
-module.exports = {
-  create,
-  findBy,
-  getAll,
-  update,
-  removeById,
-};
+module.exports = repository;
