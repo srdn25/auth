@@ -12,8 +12,6 @@ module.exports = {
     countUsersInInclude: 7,
     countSessionsInInclude: 5,
     userByServerPerPage: 15,
-    usersAllPerPage: 15,
-    serversAllPerPage: 15,
-    sessionsAllPerPage: 15,
+    modelPerPage: 15,
   }
 };

@@ -50,7 +50,7 @@ const findByServerId = async (
   serverId,
   raw = true,
   page = 1,
-  perPage = config.psql.userByServerPerPage,
+  perPage = config.psql.modelPerPage,
 ) => {
   const result = await psql.user.findAndCountAll({
     where: { serverId },
@@ -65,7 +65,7 @@ const findByServerId = async (
 const getAll = async ({
   raw = true,
   page = 1,
-  perPage = config.psql.usersAllPerPage,
+  perPage = config.psql.modelPerPage,
   order = [['createdAt', 'ASC']],
   findBy,
 }) => {

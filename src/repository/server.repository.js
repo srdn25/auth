@@ -29,7 +29,7 @@ const findBy = async (findBy, raw = true, relations = false) => {
 const getAll = async (
   raw = true,
   page = 1,
-  perPage = config.psql.serversAllPerPage,
+  perPage = config.psql.modelPerPage,
   order = [['createdAt', 'ASC']],
 ) => {
   const result = await psql.server.findAndCountAll({

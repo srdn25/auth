@@ -29,7 +29,7 @@ const findBy = async (findBy, raw = true, relations = false) => {
 const getAll = async ({
   raw = true,
   page = 1,
-  perPage = config.psql.sessionsAllPerPage,
+  perPage = config.psql.modelPerPage,
   order = [['createdAt', 'ASC']],
   findBy,
 }) => {
