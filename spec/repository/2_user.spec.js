@@ -42,26 +42,26 @@ describe('User repository', function () {
   });
 
   it('FindBy user can return Sequelize object', async () => {
-    const user = await repository.findBy({ id: User.id }, false);
+    const user = await repository.findBy({ by: { id: User.id }, raw: false });
 
     expect(user instanceof Sequelize.Model).to.be.true;
     expect(user.toJSON()).to.have.all.keys(ENTITY.fields);
   });
 
   it('Find user by ID or Email', async () => {
-    const userById = await repository.findBy({ id: User.id });
+    const userById = await repository.findBy({ by: { id: User.id } });
 
     expect(userById).to.have.all.keys(ENTITY.fields);
     expect(userById).to.deep.equal(User);
 
-    const userByEmail = await repository.findBy({ email: User.email });
+    const userByEmail = await repository.findBy({ by: { email: User.email } });
 
     expect(userByEmail).to.have.all.keys(ENTITY.fields);
     expect(userByEmail).to.deep.equal(User);
   });
 
   it('User should have hashed password and has validPassword method', async () => {
-    const user = await repository.findBy({ id: User.id }, false);
+    const user = await repository.findBy({ by: { id: User.id }, raw: false });
     const { password } = ENTITY.raw;
     const checkPassword = user.validPassword(password);
     expect(user.password).to.not.equal(password);
@@ -71,7 +71,7 @@ describe('User repository', function () {
   it('Delete user by WRONG ID', async () => {
     const result = await repository.removeById(12345);
 
-    const checkUser = await repository.findBy({ id: User.id });
+    const checkUser = await repository.findBy({ by: { id: User.id } });
 
     expect(result).to.be.false;
     expect(checkUser).to.deep.equal(User);
@@ -80,7 +80,7 @@ describe('User repository', function () {
   it('Delete user by ID', async () => {
     const result = await repository.removeById(User.id);
 
-    const checkUser = await repository.findBy({ id: User.id });
+    const checkUser = await repository.findBy({ by: { id: User.id } });
 
     expect(result).to.be.true;
     expect(checkUser).to.equal(null);
@@ -146,7 +146,7 @@ describe('User repository', function () {
 
     expect(updatedRows).to.equal(1);
 
-    const updatedUser = await repository.findBy({ id: User.id });
+    const updatedUser = await repository.findBy({ by: { id: User.id } });
     expect(updatedUser).to.have.all.keys(ENTITY.fields);
     expect(updatedUser.name).to.equal(updateData.name);
   });

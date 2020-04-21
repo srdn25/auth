@@ -13,7 +13,7 @@ const {
 describe('Session repository', function () {
   let Session;
   it('Create session', async () => {
-    const user = await userRepo.findBy({ email: USER_EMAIL });
+    const user = await userRepo.findBy({ by: { email: USER_EMAIL } });
     Session = await repository.create({
       ...ENTITY.raw,
       userId: user.id,

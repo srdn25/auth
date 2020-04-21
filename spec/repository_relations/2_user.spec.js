@@ -13,7 +13,7 @@ const {
 describe('User relations repository', function () {
   let User;
   it('User has many sessions in findByEmail', async () => {
-    User = await repository.findBy({ email: ENTITY.raw.email }, true, true);
+    User = await repository.findBy({ by: { email: ENTITY.raw.email }, relations: true });
 
     expect(User).to.have.all.keys([...ENTITY.fields, 'sessions', 'server']);
     expect(User.server).to.be.an('object');
@@ -23,7 +23,7 @@ describe('User relations repository', function () {
   });
 
   it('User has many sessions and belongs to server in findBy', async () => {
-    User = await repository.findBy({ id: User.id }, true, true);
+    User = await repository.findBy({ by: { id: User.id }, relations: true });
 
     expect(User).to.have.all.keys([...ENTITY.fields, 'sessions', 'server']);
     expect(User.sessions.length).to.equal(countSessionsInInclude);
