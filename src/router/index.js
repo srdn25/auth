@@ -1,13 +1,8 @@
 const Router = require('koa-router');
-const router = new Router();
+const router = new Router({ prefix: '/api' });
 
-router.get('/ping', (ctx) => {
-  ctx.body = {
-    msg: 'pong',
-  };
-});
+const v1 = require('./v1');
 
-module.exports = {
-  main: router,
-  v1: require('./v1'),
-};
+router.use(v1.routes(), v1.allowedMethods());
+
+module.exports = router;

@@ -2,7 +2,7 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const Boom = require('boom');
 
-const routerList = require('./router');
+const router = require('./router');
 
 const app = new Koa();
 const port = process.env.PORT || 3033;
@@ -10,15 +10,12 @@ const port = process.env.PORT || 3033;
 app.use(bodyParser());
 
 // init routes
-for(const [key, router] of Object.entries(routerList)) {
-  app.use(router.routes());
-  app.use(router.allowedMethods({
-    throw: true,
-    notImplemented: () => new Boom.notImplemented(),
-    methodNotAllowed: () => new Boom.methodNotAllowed(),
-  }));
-  console.log(`Routes for ${key} initialized`);
-};
+app.use(router.routes());
+app.use(router.allowedMethods({
+  throw: true,
+  notImplemented: () => new Boom.notImplemented(),
+  methodNotAllowed: () => new Boom.methodNotAllowed(),
+}));
 
 //logger
 app.use(async (ctx, next) => {
