@@ -13,14 +13,34 @@ const api = new OpenApi({
     },
     tags: [
       {
-        name: 'User',
+        name: 'user',
         description: 'User in system',
       },
       {
-        name: 'createUser',
+        name: 'server',
+        description: 'Server is a customer owner of web application',
       }
     ],
     paths: {
+      '/api/v1/server': {
+        post: {
+          tags: ['server'],
+          operationId: 'createServer',
+          requestBody: {
+            description: 'Server object to create',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/createServer',
+                },
+              },
+            },
+          },
+          responses: {
+            201: { description: 'OK' },
+          }
+        }
+      },
       '/api/v1/user': {
         post: {
           tags: ['user'],
@@ -36,10 +56,10 @@ const api = new OpenApi({
             },
           },
           responses: {
-            200: { description: 'OK' },
+            201: { description: 'OK' },
           }
         }
-      }
+      },
     },
     components: {
       securitySchemes: {
@@ -50,6 +70,26 @@ const api = new OpenApi({
         }
       },
       schemas: {
+        createServer: {
+          type: 'object',
+          description: 'Register new server. Allow only for users with serverId = 1',
+          properties: {
+            name: {
+              type: 'string',
+            },
+            slug: {
+              type: 'string',
+            },
+            url: {
+              type: 'string',
+            },
+          },
+          required: [
+            'name',
+            'slug',
+            'url',
+          ],
+        },
         createUser: {
           type: 'object',
           description: 'serverId will get from server token',
@@ -63,8 +103,13 @@ const api = new OpenApi({
             password: {
               type: 'string',
             },
-          }
-        }
+          },
+          required: [
+            'name',
+            'email',
+            'password',
+          ]
+        },
       },
     },
   },
