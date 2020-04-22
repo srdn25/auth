@@ -4,7 +4,7 @@ const { hashUserPassword } = require('../../helper');
 const DEFAULT_USERS = [
   {
     name: process.env.ADMIN_NAME,
-    email: 'srdn2417@gmail.com',
+    email: process.env.ADMIN_EMAIL,
     password: process.env.ADMIN_PASSWORD,
   },
 ];
