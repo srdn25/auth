@@ -7,6 +7,7 @@
     "dev": "set NODE_ENV=development && nodemon --trace-warnings --inspect=0.0.0.0:9229 src/index.js",
     "prod": "set NODE_ENV=production && node src/index.js",
     "db:migrate": "node node_modules/.bin/sequelize db:migrate",
+    "db:seeds": "node -r dotenv/config node_modules/.bin/sequelize db:seed:all",
     "eslint": "node node_modules/.bin/eslint src/**/*.js",
     "eslint:fix": "node node_modules/.bin/eslint --fix src/**/*.js",
     "coverage": "nyc npm run test",
