@@ -1,6 +1,7 @@
 const OpenApi = require('openapi-backend').default;
 
 const api = new OpenApi({
+  validate: true,
   definition: {
     openapi: '3.0.2',
     info: {
@@ -10,10 +11,13 @@ const api = new OpenApi({
         email: 'srdn2417@gmail.com'
       }
     },
-    tegs: [
+    tags: [
       {
         name: 'User',
         description: 'User in system',
+      },
+      {
+        name: 'createUser',
       }
     ],
     paths: {
@@ -22,41 +26,40 @@ const api = new OpenApi({
           tags: ['user'],
           operationId: 'createUser',
           requestBody: {
-            required: true,
             description: 'User object to create',
             content: {
               'application/json': {
                 schema: {
-                  type: 'object',
-                  properties: {
-                    name: {
-                      type: 'string',
-                    },
-                  }
+                  $ref: '#/components/schemas/createUser',
                 },
               },
             },
-            responses: {
-              200: { description: 'OK' },
-            }
+          },
+          responses: {
+            200: { description: 'OK' },
           }
         }
       }
     },
-    handlers: {
-      createUser: async (c, ctx) => {
-        ctx.body = { operationId: c.operation.operationId }
+    components: {
+      schemas: {
+        createUser: {
+          type: 'object',
+          description: 'serverId will get from server token',
+          properties: {
+            name: {
+              type: 'string',
+            },
+            email: {
+              type: 'string',
+            },
+            password: {
+              type: 'string',
+            },
+          }
+        }
       },
-      validationFail: async (c, ctx) => {
-        ctx.body = { err: c.validation.errors };
-        ctx.status = 400;
-      },
-      notFound: async (c, ctx) => {
-        console.log(c);
-        ctx.body = { err: 'not found' };
-        ctx.status = 404;
-      },
-    },
+    }
   },
 
 });
