@@ -20,11 +20,11 @@
     "docker:app:stop": "docker-compose stop app",
     "docker:app:start": "docker-compose start app",
     "docker:stop": "docker-compose stop",
-    "test": "node ./node_modules/.bin/mocha --inspect=9239 spec/index.spec.js"
+    "test": "node ./node_modules/.bin/mocha --inspect=9229 spec/index.spec.js"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run eslint"
+      "pre-commit": "npm run eslint && npm run test"
     }
   },
   "repository": {

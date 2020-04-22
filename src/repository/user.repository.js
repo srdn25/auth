@@ -1,7 +1,7 @@
 const psql = require('../psql/models');
 const config = require('../config');
 const templateRepo = require('./template');
-const { getPlainFromSequelize } = require('../helper');
+const { getPlainFromSequelize } = require('../helper/postgresHelpers');
 
 const template = templateRepo(psql.user);
 

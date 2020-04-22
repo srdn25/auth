@@ -1,5 +1,5 @@
 const config = require('../config');
-const { getPlainFromSequelize } = require('../helper');
+const { getPlainFromSequelize } = require('../helper/postgresHelpers');
 
 module.exports = function (model) {
   return {

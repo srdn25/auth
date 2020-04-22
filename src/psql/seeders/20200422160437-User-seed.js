@@ -1,4 +1,5 @@
 'use strict';
+const { hashUserPassword } = require('../../helper');
 
 const DEFAULT_USERS = [
   {
@@ -21,12 +22,18 @@ module.exports = {
       ['id'],
     );
 
-    await queryInterface.bulkInsert('user', DEFAULT_USERS.map((u) => ({
+
+    await queryInterface.bulkInsert('user', DEFAULT_USERS.map((u) => {
+      const password = hashUserPassword(u.password);
+
+      return {
       ...u,
-      serverId,
-      createdAt,
-      updatedAt,
-    })));
+        password,
+        serverId,
+        createdAt,
+        updatedAt,
+      }
+    }));
   },
 
   down: async (queryInterface) => {

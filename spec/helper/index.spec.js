@@ -3,10 +3,19 @@ const psql = require('../../src/psql/models');
 const {
   lastPage,
   itemsOnLastPage,
-  getPlainFromSequelize,
+  compareHashPassword,
+  hashUserPassword,
 } = require('../../src/helper');
+const {
+  getPlainFromSequelize,
+} = require('../../src/helper/postgresHelpers');
 
 describe('Helpers index', function () {
+  const Password = {
+    raw: 'secret',
+    hash: null,
+  };
+
   it('Get last page', () => {
     const calc = lastPage(35, 8);
 
@@ -29,5 +38,14 @@ describe('Helpers index', function () {
 
     expect(seqServer instanceof Sequelize.Model).to.be.true;
     expect(calc instanceof Sequelize.Model).to.be.false;
+  });
+
+  it('Hash user password', () => {
+    Password.hash = hashUserPassword(Password.raw);
+    expect(Password.hash).to.not.equal(Password.raw);
+  });
+
+  it('Compare user password', () => {
+    expect(compareHashPassword(Password.raw, Password.hash)).to.be.true;
   });
 });
