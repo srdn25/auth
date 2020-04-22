@@ -42,6 +42,13 @@ const api = new OpenApi({
       }
     },
     components: {
+      securitySchemes: {
+        apiKey: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'security-api-key'
+        }
+      },
       schemas: {
         createUser: {
           type: 'object',
@@ -59,9 +66,18 @@ const api = new OpenApi({
           }
         }
       },
-    }
+    },
   },
 
+});
+
+api.register('unauthorizedHandler', (c, req, res) => {
+  return res.status(401).json({ err: 'unauthorized' })
+});
+
+api.registerSecurityHandler('ApiKey', (c) => {
+  const authorized = c.request.headers['security-api-key'] === 'SuperSecretPassword';
+  return authorized;
 });
 
 api.init();
