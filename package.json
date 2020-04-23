@@ -4,8 +4,8 @@
   "description": "Auth server",
   "main": "src/index.js",
   "scripts": {
-    "dev": "set NODE_ENV=development && nodemon --trace-warnings --inspect=0.0.0.0:9229 src/index.js",
-    "prod": "set NODE_ENV=production && node src/index.js",
+    "dev": "NODE_ENV=development nodemon --trace-warnings --inspect=0.0.0.0:9229 src/index.js",
+    "prod": "NODE_ENV=production node src/index.js",
     "db:migrate": "node node_modules/.bin/sequelize db:migrate",
     "db:seeds": "node -r dotenv/config node_modules/.bin/sequelize db:seed:all",
     "eslint": "node node_modules/.bin/eslint src/**/*.js",
@@ -20,7 +20,7 @@
     "docker:app:stop": "docker-compose stop app",
     "docker:app:start": "docker-compose start app",
     "docker:stop": "docker-compose stop",
-    "test": "node ./node_modules/.bin/mocha --inspect=9229 spec/index.spec.js"
+    "test": "NODE_ENV=test node ./node_modules/.bin/mocha spec/index.spec.js"
   },
   "husky": {
     "hooks": {
