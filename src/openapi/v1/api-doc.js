@@ -111,9 +111,18 @@ const api = new OpenApi({
           ]
         },
       },
+      securitySchemes: {
+        ApiKey: {
+          type: 'apiKey',
+          in: 'headers',
+          name: 'security-api-key',
+        },
+      },
     },
   },
-
+  security: {
+    ApiKey: [],
+  },
 });
 
 api.register('unauthorizedHandler', (c, req, res) => {
@@ -121,8 +130,7 @@ api.register('unauthorizedHandler', (c, req, res) => {
 });
 
 api.registerSecurityHandler('ApiKey', (c) => {
-  const authorized = c.request.headers['security-api-key'] === 'SuperSecretPassword';
-  return authorized;
+  return c.request.headers['security-api-key'] === 'SuperSecretPassword';
 });
 
 api.init();
