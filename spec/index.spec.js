@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-const importFolder = require('../scripts/import_by_sort');
+const importFolder = require('../scripts/export_all_from_folder');
 const config = require('../src/config');
 const { sequelize } = require('../src/psql/models');
 
@@ -18,13 +18,13 @@ after(async () => {
 
 importFolder({
   folder: __dirname + '/repository',
-  filter: /spec\.js$/i,
+  filter: '.spec.js',
 });
 importFolder({
   folder: __dirname + '/repository_relations',
-  filter: /spec\.js$/i,
+  filter: '.spec.js',
 });
 importFolder({
   folder: __dirname + '/helper',
-  filter: /spec\.js$/i,
+  filter: '.spec.js',
 });
