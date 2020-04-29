@@ -131,24 +131,24 @@ const api = new OpenApi({
       };
     },
     createServer: async (c, ctx) => {
-      ctx.body = entities.server;
-    }
+      ctx.body = { operationId: c.operation.operationId };
+      ctx.status = 201;
+    },
+    validationFail: async (c, ctx) => {
+      ctx.body = { err: c.validation.errors };
+      ctx.status = 400;
+    },
+    notFound: async (c, ctx) => {
+      console.log(c);
+      ctx.body = { err: 'not found' };
+      ctx.status = 404;
+    },
+  },
+  securityHandlers: {
+    ApiKey: async (c) => c.request.headers['security-api-key'] === 'SuperSecretPassword',
   },
 });
 
-api.registerSecurityHandler('ApiKey', (c) => {
-  return c.request.headers['security-api-key'] === 'SuperSecretPassword';
-});
-
 api.init();
-
-const entities = {
-  server: {
-    id: 1,
-    name: 'Server name',
-    slug: 'server_slug',
-    url: 'http://google.com',
-  }
-};
 
 module.exports = api;
