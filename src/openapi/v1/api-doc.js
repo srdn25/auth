@@ -123,10 +123,17 @@ const api = new OpenApi({
   security: {
     ApiKey: [],
   },
-});
-
-api.register('unauthorizedHandler', (c, req, res) => {
-  return res.status(401).json({ err: 'unauthorized' })
+  handlers: {
+    unauthorizedHandler: async (c, ctx) => {
+      ctx.status = 401;
+      ctx.body = {
+        err: 'unauthorized',
+      };
+    },
+    createServer: async (c, ctx) => {
+      ctx.body = entities.server;
+    }
+  },
 });
 
 api.registerSecurityHandler('ApiKey', (c) => {
@@ -134,5 +141,14 @@ api.registerSecurityHandler('ApiKey', (c) => {
 });
 
 api.init();
+
+const entities = {
+  server: {
+    id: 1,
+    name: 'Server name',
+    slug: 'server_slug',
+    url: 'http://google.com',
+  }
+};
 
 module.exports = api;
