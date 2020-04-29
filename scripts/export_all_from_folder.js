@@ -1,7 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function ({ folder = './', filter = '.js', regex = null }) {
+module.exports = function ({ folder, filter = '.js', regex = null }) {
+  if (!folder) {
+    throw new Error('Missing "folder" parameter!')
+  }
+
   const files = fs.readdirSync(folder);
   return files.sort().reduce((acc, file) => {
     const clearFilter = filter.replace(/\./g, '\\.');
