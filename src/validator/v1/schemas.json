@@ -1,0 +1,51 @@
+{
+  "server": {
+    "create": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      }
+    },
+    "findBy": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "getAll": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "page": {
+          "type": "number"
+        },
+        "perPage": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
