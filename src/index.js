@@ -3,13 +3,11 @@ const bodyParser = require('koa-bodyparser');
 const Boom = require('boom');
 
 const router = require('./router');
-const apiDoc = require('./openapi/v1/api-doc');
 
 const app = new Koa();
 const port = process.env.PORT || 3033;
 
 app.use(bodyParser());
-app.use((ctx) => apiDoc.handleRequest(ctx.request, ctx));
 
 // init routes
 app.use(router.routes());

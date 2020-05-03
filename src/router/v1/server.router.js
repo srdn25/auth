@@ -4,7 +4,7 @@ const router = new Router({ prefix: '/server' });
 
 // Create server
 router.post('/', (ctx) => {
-  const data = ctx.requrest.body;
+  const data = ctx.request.body;
   ctx.body = data;
 });
 
