@@ -5,7 +5,8 @@ const router = new Router({ prefix: '/server' });
 
 // Create server
 router.post('/', (ctx) => {
-  validator.server.create(ctx.request.body);
+  const data = ctx.request.body;
+  validator.server.create(data);
   ctx.body = data;
 });
 

@@ -3,14 +3,20 @@
     "create": {
       "type": "object",
       "required": [
-        "id"
+        "name",
+        "url",
+        "slug"
       ],
+      "additionalProperties": false,
       "properties": {
-        "id": {
-          "type": [
-            "string",
-            "number"
-          ]
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
         }
       }
     },
