@@ -8,7 +8,9 @@ const routes = exportAll({
 });
 
 for (const [name, route] of Object.entries(routes)) {
-  router.use(route.routes(), route.allowedMethods());
+  router.use(route.routes(), route.allowedMethods({
+    throw: true,
+  }));
   console.log(`Router init ${name}`)
 }
 
